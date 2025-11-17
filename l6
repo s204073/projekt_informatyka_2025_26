@@ -1,0 +1,112 @@
+Zadanie 1: Refaktoryzacja Kodu – Stworzenie Klasy Game
+
+Kontekst: Obecnie cała logika gry Arkanoid (tworzenie okna, zegar, ładowanie poziomu, pętla główna, aktualizacje, kolizje i rysowanie) znajduje się w pliku main.cpp. Powoduje to, że funkcja main jest przeładowana i trudna w zarządzaniu.
+
+Cel: Celem zadania jest refaktoryzacja kodu poprzez wydzielenie całej logiki gry do oddzielnej klasy Game. Plik main.cpp ma stać się "czysty" – jego rola ma sprowadzić się do stworzenia obiektu Game i uruchomienia go.
+
+Zadanie do wykonania:
+
+    Stwórz klasę Game (w nowych plikach Game.h i Game.cpp).
+
+    Przenieś logikę z main do klasy Game. Klasa Game powinna teraz zarządzać (posiadać jako prywatne pola):
+
+        sf::RenderWindow m_window;
+
+        sf::Clock m_deltaClock;
+
+        Paletka m_paletka;
+
+        Pilka m_pilka;
+
+        std::vector<Stone> m_bloki;
+
+    Konstruktor Game(): Przenieś do niego całą logikę inicjalizacji (tworzenie okna, ustawianie framerateLimit, tworzenie paletki, piłki oraz całą pętlę generującą bloki).
+
+    Stwórz metodę run(): Przenieś do niej całą pętlę while (window.isOpen()).
+
+    Stwórz metody prywatne (wywoływane wewnątrz run()):
+
+        void processEvents(); (przenieś tu pętlę window.pollEvent()).
+
+        void update(sf::Time dt); (przenieś tu logikę paletka.update(), pilka.update(), kolizje for oraz usuwanie bloków bloki.erase(...)).
+
+        void render(); (przenieś tu logikę window.clear(), draw() dla wszystkich obiektów i window.display()).
+
+    Zmodyfikuj main.cpp: Po refaktoryzacji, plik main.cpp powinien być minimalistyczny i zawierać jedynie:
+
+    #include "Game.h"
+
+    int main()
+    {
+        Game game;
+        game.run();
+        return 0;
+    }
+
+Zadanie 2: Integracja Menu Głównego i Zarządzanie Stanem Gry
+
+Kontekst: Otrzymujesz klasę Menu (kod tydzień 4), która implementuje proste menu główne. Otrzymujesz również kod main(), który pokazuje, jak z niej korzystać.
+
+Cel: Zintegrować klasę Menu z klasą Game (stworzoną w Zadaniu 1). Aplikacja nie może już uruchamiać gry od razu. Musi najpierw wyświetlić menu, a dopiero po wybraniu opcji "Nowa gra" (i naciśnięciu Enter) uruchomić właściwą rozgrywkę.
+
+Zadanie do wykonania:
+
+    Zmodyfikuj klasę Game (z Zadania 1):
+
+        Klasa Game nie powinna już posiadać sf::RenderWindow. Okno musi stać się zasobem globalnym, zarządzanym przez main.
+
+        Przekaż okno do metod Game przez referencję:
+
+            Konstruktor: Game() (może zostać pusty, albo ładować poziom).
+
+            void update(sf::Time dt); (logika gry, bez zmian).
+
+            void render(sf::RenderTarget& target); (rysuje obiekty na podanym celu, bez clear i display).
+
+        Usuń metodę run() i processEvents() z klasy Game. Pętla główna i obsługa zdarzeń wracają do main.cpp.
+
+    Stwórz "Maszynę Stanów" w main.cpp:
+
+        Zdefiniuj enum do zarządzania stanem:
+
+        enum class GameState { Menu, Playing, Scores, Exiting };
+
+        W main() stwórz instancje wszystkich potrzebnych klas:
+
+        sf::RenderWindow window(sf::VideoMode({800, 600}), "Arkanoid");
+        Menu menu(window.getSize().x, window.getSize().y);
+        Game game; // Załaduje bloki, paletkę itp.
+        GameState currentState = GameState::Menu;
+
+        W głównej pętli while (window.isOpen()) zaimplementuj logikę opartą na switch(currentState) lub if/else.
+
+    Zarządzanie pętlą główną w main.cpp:
+
+        Obsługa zdarzeń: Musi obsługiwać zarówno zdarzenia dla Menu (Strzałki, Enter), jak i zdarzenia dla Game (np. wyjście z gry przez ESC).
+
+        Logika update: Wywołuj game.update(dt) tylko jeśli currentState == GameState::Playing.
+
+        Logika render:
+
+            window.clear();
+
+            if (currentState == GameState::Menu)
+
+            menu.draw(window);
+
+            else if (currentState == GameState::Playing)
+
+            game.render(window);
+
+            window.display();
+
+    Połączenie Stanów:
+
+        Zmodyfikuj logikę Menu (w main.cpp): zamiast std::cout << "Uruchamiam gre...", kod ma zmieniać stan:
+
+        if (keyPressed->scancode == sf::Keyboard::Scancode::Enter && menu.getSelectedItem() == 0)
+        {
+            currentState = GameState::Playing; // Zmiana stanu
+        }
+
+        Zakończenie gry (np. po naciśnięciu Enter na "Wyjście") powinno ustawiać currentState = GameState::Exiting lub bezpośrednio window.close().
