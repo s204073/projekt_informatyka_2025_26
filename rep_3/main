@@ -54,8 +54,16 @@ int main() {
 		}
 
 		//aktualizacja logiki
-		paletka.ruch(dt, SZEROKOSC);
-		pilka.ruch(dt, { SZEROKOSC, WYSOKOSC }, paletka);
+		//paletka.ruch(dt, SZEROKOSC);
+		//pilka.ruch(dt, { SZEROKOSC, WYSOKOSC }, paletka);
+
+		//aktualizacja logiki
+		pal.ruch(dt, SZEROKOSC);
+		pilka.ruch(dt, { SZEROKOSC, WYSOKOSC }, pal);
+		if (pilka.getPosition.y - pilka.getRadius() > WYSOKOSC) {
+			std::cout << "MISS! KONIEC GRY!\n";
+			window.close();
+		}
 
 		//kolizja pilki z blokami
 		for (auto& blk : bloki) {
