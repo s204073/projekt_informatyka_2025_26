@@ -29,7 +29,7 @@ public:
 	float getWysokosc() const { return wysokosc; }
 	sf::FloatRect getGlobalBounds() const;
 
-	void setPosition(float newX, float newY);						//tu nie jestem pewien
+	void setPosition(float newX, float newY);						
 };
 
 
