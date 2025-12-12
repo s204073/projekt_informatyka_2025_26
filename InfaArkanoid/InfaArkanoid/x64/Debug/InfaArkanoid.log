@@ -1,0 +1,22 @@
+﻿  Ball.cpp
+  Brick.cpp
+  Game.cpp
+  main2.cpp
+C:\Users\admin\source\repos\infa_arkanoid\Ball.cpp(2,10): error C1083: Nie można otworzyć pliku dołącz: 'SFML/Graphics.hpp': No such file or directory
+C:\Users\admin\source\repos\infa_arkanoid\Brick.h(3,10): error C1083: Nie można otworzyć pliku dołącz: 'SFML/Graphics.hpp': No such file or directory
+  (kompilowanie pliku źródłowego „../infa_arkanoid/Brick.cpp”)
+  
+C:\Users\admin\source\repos\infa_arkanoid\Game.h(3,10): error C1083: Nie można otworzyć pliku dołącz: 'SFML/Graphics.hpp': No such file or directory
+  (kompilowanie pliku źródłowego „../infa_arkanoid/Game.cpp”)
+  
+  Menu.cpp
+C:\Users\admin\source\repos\infa_arkanoid\Menu.h(2,10): error C1083: Nie można otworzyć pliku dołącz: 'SFML/Graphics.hpp': No such file or directory
+  (kompilowanie pliku źródłowego „../infa_arkanoid/Menu.cpp”)
+  
+  Paddle.cpp
+C:\Users\admin\source\repos\infa_arkanoid\Paddle.h(3,10): error C1083: Nie można otworzyć pliku dołącz: 'SFML/Graphics.hpp': No such file or directory
+  (kompilowanie pliku źródłowego „../infa_arkanoid/Paddle.cpp”)
+  
+  InfaArkanoid.cpp
+C:\Users\admin\source\repos\InfaArkanoid\InfaArkanoid.cpp(3,10): error C1083: Nie można otworzyć pliku dołącz: 'SFML/Graphics.hpp': No such file or directory
+  Generowanie kodu...
