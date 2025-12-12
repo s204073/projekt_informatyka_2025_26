@@ -8,7 +8,7 @@ private:
 	float x, y;				//polozenie
 	float radius;			//promien
 	sf::CircleShape m_shape;
-	sf::Vector2f velocity{ 100.f, 100.f }; //predkosc poczatkowa, 200 po x tylko? to tak jakby glupie
+	sf::Vector2f velocity{ 100.f, 100.f }; //predkosc poczatkowa
 
 public:
 	Ball(sf::Vector2f startPos, float radius, sf::Vector2f startVel);	//konstruktor
@@ -31,7 +31,7 @@ public:
 
 
 	void setPosition(float newX, float newY);
-	void setVelocity(float newVX, float newVY);			//nie wiem po co to jeszcze
+	void setVelocity(float newVX, float newVY);			
 
 };
 
